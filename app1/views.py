@@ -127,7 +127,7 @@ class ProductAPIView(APIView):
 
      ############Delete##########
 	def delete(self,request,pro_id):
-		data = {"message":"Delete successfully"}
+		data = {"message":"Delete successfully!!!!"}
 		status_code = 200
 		try:
 			pro = Product.objects.get(id=pro_id)
