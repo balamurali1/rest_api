@@ -15,16 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app1.views import CategoryAPIView,ProductAPIView
+from app1.views import CategoryAPIView,ProductAPIView,SalesAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('categories/$',CategoryAPIView.as_view()),
+    path('categories/',CategoryAPIView.as_view()),
     path('categories/<int:cat_id>/',CategoryAPIView.as_view()),
 
 
     path('product/',ProductAPIView.as_view()),
-    path('product/<int:pro_id>/',ProductAPIView.as_view())
+    path('product/<int:pro_id>/',ProductAPIView.as_view()),
+
+
+    path('salesorder/',SalesAPIView.as_view()),
+    path('salesorder/<int:sal_id>/',SalesAPIView.as_view()),
+
+
 
 
 ]

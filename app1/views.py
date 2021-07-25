@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from app1.models import Category
 from app1.models import Product
+from app1.models import SalesOrder
 import json
 
 # Create your views here.
@@ -140,6 +141,77 @@ class ProductAPIView(APIView):
 
 
 ############## SalesOrder #############
+
+class SalesAPIView(APIView):
+
+	##########Post method########
+	def post(self,request):
+		data = request.data
+		try:
+			#sa =  SalesOrder.objects.get(id=2)
+			sale = SalesOrder(description=data.get('description'))
+			#sale.products.add(sa.id)
+			sale.save()
+
+			# pro = Product.objects.get(id=1)
+			# sale1 = SalesOrder(description=data.get('description'))
+			# sale1.products.add(pro.id)
+			# sale1.save()
+			message="SalesOrder %s inserted successfully" % sale.description
+			#raise Exception('Category not Created.')
+			status_code = 200
+		except Exception as err:
+			message = str(err)
+			status_code=400	
+		return Response({"message":message},status= status_code)
+	 ##########get method########
+	def get(self,request,sal_id=None):
+		items = []
+		sales = []
+		status_code=200
+		data = {"message":"Success","items":items}
+		if sal_id:
+			try:
+				sales = SalesOrder.objects.get(id=sal_id)
+				if sales:
+					sales = [sales]
+			except Exception as err:
+				data['message']=str(err)
+				status_code=404
+
+		else:
+			sales = SalesOrder.objects.all()
+		for cat in sales:
+			items.append({"description":cat.description})
+		return Response(data,status=status_code)	
+
+	 #################PUT (update)###############
+	def put(self,request,sal_id):
+		data = {"message":"Success"}
+		status_code = 200
+		try:
+			sale = SalesOrder.objects.get(id=sal_id)
+			request_data = request.data
+			sale.description = request_data.get("description")
+			sale.save()
+		except Exception as err:
+			data['message'] = str(err)
+			status_code = 404
+		return Response(data,status=status_code)
+	
+
+	 ############Delete##########
+	def delete(self,request,sal_id):
+		data = {"message":"Delete successfully!!!!"}
+		status_code = 200
+		try:
+			sale = SalesOrder.objects.get(id=sal_id)
+			sale.delete()
+		except Exception as err:
+			data['message'] = str(err)
+			status_code = 404
+		return Response(data,status=status_code)	
+
 
 
 
