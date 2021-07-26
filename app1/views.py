@@ -148,15 +148,13 @@ class SalesAPIView(APIView):
 	def post(self,request):
 		data = request.data
 		try:
-			#sa =  SalesOrder.objects.get(id=2)
 			sale = SalesOrder(description=data.get('description'))
-			#sale.products.add(sa.id)
 			sale.save()
 
-			# pro = Product.objects.get(id=1)
-			# sale1 = SalesOrder(description=data.get('description'))
-			# sale1.products.add(pro.id)
-			# sale1.save()
+			for prod_id in data.get("products"):	
+				prod = Product.objects.get(id=prod_id)
+				sale.products.add(prod)
+				
 			message="SalesOrder %s inserted successfully" % sale.description
 			#raise Exception('Category not Created.')
 			status_code = 200
